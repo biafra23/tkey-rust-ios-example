@@ -43,7 +43,6 @@ struct ThresholdKeyView: View {
             let dictionary = [kSecClass as String: secItemClass]
             SecItemDelete(dictionary as CFDictionary)
         }
-
     }
 
     func randomPassword() -> String {
