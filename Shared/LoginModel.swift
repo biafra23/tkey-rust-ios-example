@@ -23,19 +23,17 @@ class LoginModel: ObservableObject {
 
     func loginWithCustomAuth() {
         Task {
-            let sub = SubVerifierDetails(loginType: .web, // .installed,
+            let sub = SubVerifierDetails(loginType: .installed,
                                          loginProvider: .google,
-//                                         clientId: "500572929132-57dbeqrtq84m5oibve186vfmdd6p5rmh.apps.googleusercontent.com", // ios
-                                         clientId: "500572929132-4735prr2svs7qphpmgdu5bgcvq3cdkr4.apps.googleusercontent.com", // web
-                                         verifier: "test-custom-web-safe",
-                                         redirectURL: "https://owncloud.jaeckel.com/"
+                                         clientId: "500572929132-57dbeqrtq84m5oibve186vfmdd6p5rmh.apps.googleusercontent.com",
+                                         verifier: "google-sub-bttr-500572929132",
+                                         redirectURL: "com.googleusercontent.apps.500572929132-57dbeqrtq84m5oibve186vfmdd6p5rmh://"
 
             )
-            let tdsdk = CustomAuth(aggregateVerifierType: .singleLogin,
-                                   aggregateVerifier: "test-custom-web-safe",
+            let tdsdk = CustomAuth(aggregateVerifierType: .singleIdVerifier,
+                                   aggregateVerifier: "google-aggregate-bttr",
                                    subVerifierDetails: [sub],
-                                   network: .TESTNET,
-                                   loglevel: .debug
+                                   network: .CYAN
             )
             let data = try await tdsdk.triggerLogin()
             await MainActor.run(body: {
