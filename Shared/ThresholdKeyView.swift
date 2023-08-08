@@ -128,19 +128,24 @@ struct ThresholdKeyView: View {
                                     showSpinner = SpinnerLocation.nowhere
                                     return
                                 }
-
+                                dump(key_details, name: "---> key_details")
                                 totalShares = Int(key_details.total_shares)
                                 threshold = Int(key_details.threshold)
                                 tkeyInitalized = true
 
-                                // fetch all locally available shares for this google account
-                                var shares: [String] = []
-                                shareCount = 0
+                                // fetch all locally available shares for this google account from the keychain
+                                var shares: [String] = ["f2bc1cd32962df4e3f5d5ebb52568acac46dd31a99790155f874485dc8bea088",
+                                                        "d4711d433269d3e98bf3607b01bddfee9def715112e2e21c246f7a711768236e"] //bttr.tstr
+//                                var shares: [String] = ["69b2faad80ea516cf41474aa111aaa454617e8c823290443679415b7d3690530",
+//                                                        "6190269874f8ff83abd793e31c6108896bb9ceef88562028ade5ebaa929b4234"] // ego.other
+                                shareCount = shares.count
                                 var finishedFetch = false
                                 repeat {
                                     let fetchId = fetchKey + ":" + String(shareCount)
+                                    print("---> fetchId: \(fetchId)" )
                                     do {
                                         let share = try KeychainInterface.fetch(key: fetchId)
+                                        print("---> Fetched share: \(share)")
                                         shares.append(share)
                                     } catch {
                                         finishedFetch = true
@@ -151,6 +156,8 @@ struct ThresholdKeyView: View {
 
                                 // There are 0 locally available shares for this tkey
                                 if shareCount == 0 {
+
+                                    print("---> Sharecount is 0.  Creating shared key")
                                     // Attempt reconstruction
                                     guard let reconstructionDetails = try? await threshold_key.reconstruct() else {
                                         alertContent = "Failed to reconstruct key. \(threshold) more share(s) required"
@@ -193,6 +200,8 @@ struct ThresholdKeyView: View {
                                 }
                                 // existing account
                                 else {
+
+                                    print("---> Reconstring Existing Key from \(shareCount) shares: ")
                                     // check enough shares are available
                                     if shareCount < threshold {
                                         alertContent = "Not enough shares for reconstruction"
@@ -220,12 +229,16 @@ struct ThresholdKeyView: View {
                                         showSpinner = SpinnerLocation.nowhere
                                         return
                                     }
-
+                                    dump(reconstructionDetails, name: "---> reconstructionDetails")
                                     reconstructedKey = reconstructionDetails.key
                                     alertContent = "\(reconstructedKey) is the private key"
                                     showAlert = true
                                     tkeyReconstructed = true
                                     resetAccount = false
+
+                                    print("--->        reconstructedKey: \(reconstructedKey)")
+                                    print("---> reconstructedSeedPhrase: \(reconstructionDetails.seed_phrase)")
+                                    print("--->              postboxkey: \(userData["privateKey"])")
                                 }
                                 showSpinner = SpinnerLocation.nowhere
                             }
@@ -366,7 +379,7 @@ alertContent = "There are \(totalShares) available shares. \(key_details.require
                             // TODO: allow users to input password in a popup.
                             // TODO: add loader as well, API call could take a >3 seconds
                             let question = "what's your password?"
-                            let answer = randomPassword()
+                            let answer = "foobar23" // randomPassword()
                             Task {
                                 do {
                                     showSpinner = SpinnerLocation.add_password_btn
@@ -579,6 +592,8 @@ alertContent = "There are \(totalShares) available shares. \(key_details.require
                                     let shareOut = try threshold_key.output_share(shareIndex: index)
 
                                     let result = try ShareSerializationModule.serialize_share(threshold_key: threshold_key, share: shareOut)
+
+                                    print("---> Exported share: \(result)")
                                     alertContent = "serialize result is \(result)"
                                     showAlert = true
                                 } catch {
@@ -603,8 +618,9 @@ alertContent = "There are \(totalShares) available shares. \(key_details.require
                         Button(action: {
                             Task {
                                 do {
-                                    let key_module = try PrivateKey.generate()
-                                    let result = try await PrivateKeysModule.set_private_key(threshold_key: threshold_key, key: key_module.hex, format: "secp256k1n")
+//                                    let postboxkey = userData["privateKey"] as! String
+//                                    let key_module = try PrivateKey.init(hex: postboxkey)
+                                    let result = try await PrivateKeysModule.set_private_key(threshold_key: threshold_key, key: "3be6b03e7b5f1f5100ae64ad296efaf35b758d2639af449ee5df12625cf7a063", format: "secp256k1n")
 
                                     if result {
                                         alertContent = "Setting private key completed"

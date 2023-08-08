@@ -38,7 +38,7 @@ class LoginModel: ObservableObject {
             let data = try await tdsdk.triggerLogin()
             await MainActor.run(body: {
                 self.userData = data
-                dump(data, name: "Data ")
+                dump(data, name: "---> Data ")
                 loggedIn = true
             })
         }

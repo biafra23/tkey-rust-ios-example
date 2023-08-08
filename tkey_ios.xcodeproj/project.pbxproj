@@ -67,6 +67,7 @@
 		14446F3529CD642100B7EFE2 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		14446F3829CD644100B7EFE2 /* LoginModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginModel.swift; sourceTree = "<group>"; };
 		935E0CF12A1274C100438B48 /* tkey_ios (iOS).entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "tkey_ios (iOS).entitlements"; sourceTree = "<group>"; };
+		93F136522A7D95E800AC1C3E /* libtkey-pkg */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "libtkey-pkg"; path = "../libtkey-pkg"; sourceTree = "<group>"; };
 		B30B6B1028BCC8A900812C1E /* tkey_iosApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tkey_iosApp.swift; sourceTree = "<group>"; };
 		B30B6B1128BCC8A900812C1E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		B30B6B1228BCC8AC00812C1E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -122,6 +123,7 @@
 		B30B6B0A28BCC8A900812C1E = {
 			isa = PBXGroup;
 			children = (
+				93F136522A7D95E800AC1C3E /* libtkey-pkg */,
 				935E0CF12A1274C100438B48 /* tkey_ios (iOS).entitlements */,
 				B30B6B0F28BCC8A900812C1E /* Shared */,
 				B30B6B1E28BCC8AC00812C1E /* macOS */,
